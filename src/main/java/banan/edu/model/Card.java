@@ -6,6 +6,10 @@ public class Card {
     private Denomination denomination;
     private int value;
     private String image;
+    private int position;
+    private int rotation;
+    private int number;
+    private int top;
 
     public Card() {
     }
@@ -22,6 +26,51 @@ public class Card {
         this.id = id;
         this.image = image;
         this.value = value;
+    }
+
+    public Card(int id, Suit suit, Denomination denomination, int value, String image, int position, int rotation, int number,
+    int top) {
+        this.id = id;
+        this.suit = suit;
+        this.denomination = denomination;
+        this.value = value;
+        this.image = image;
+        this.position = position;
+        this.rotation = rotation;
+        this.number = number;
+        this.top = top;
+    }
+
+    public int getTop() {
+        return top;
+    }
+
+    public void setTop(int top) {
+        this.top = top;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(int rotation) {
+        this.rotation = rotation;
     }
 
     public int getId() {

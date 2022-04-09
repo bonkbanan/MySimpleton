@@ -1,0 +1,67 @@
+body{
+    background: url("/image/background.jpeg");
+    background-size: 2750px ;
+    height: 100%;
+    max-height: 1240px;
+}
+
+html{
+    height: 100%;
+}
+
+.buttons{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 320px;
+    margin: 0 auto;
+    height: 190px;
+}
+
+.board {
+    width: 80%;
+    height: 62%;
+    background: transparent;
+    border: solid 6px brown;
+    border-radius: 400px;
+    padding: 40px;
+    margin: 0 auto;
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.greeting{
+    height: 40px;
+    width: 460px;
+    color: white;
+    margin-left: 25px;
+    font-size: 50px;
+    font-family:"Sansita Swashed";
+}
+
+button{
+    background: transparent;
+    border: solid 3px brown;
+    height: 45px;
+    border-radius: 50px;
+    width: 230px;
+    margin: 0 auto;
+    padding-bottom: 7px;
+    transition: 1.2s;
+    color:white;
+    margin-bottom: 15px;
+    font-size: 24px;
+    font-family:"Sansita Swashed";
+}
+
+button:hover{
+    width: 250px;
+    height: 60px;
+    transition: 1.2s;
+    padding: 0px 10px 3px 10px;
+    background-color: #009b6f;
+}

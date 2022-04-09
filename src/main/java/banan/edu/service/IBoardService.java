@@ -14,6 +14,6 @@ public interface IBoardService {
     List<Card> getDealerMoves();
     List<Card> getTrash();
     String getMessage();
-    boolean getTurn();
+
     Suit getTrump();
 }

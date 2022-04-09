@@ -6,26 +6,71 @@ import banan.edu.model.Deck;
 import banan.edu.model.Suit;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardServiceImpl implements IBoardService {
-    private Deck deck;
-    private Board board;
+     Deck deck;
+     Board board = new Board();
 
     public BoardServiceImpl() {
+
         deck = new Deck();
+        if(board.getCards()==52 && deck.getDeck().size() < 52){
+            deck.allDeck();
+        }
+        if(board.getCards() == 36 && deck.getDeck().size() < 36){
+            deck.partDeck();
+        }
         List<Card> deckCopy = new ArrayList<>(deck.getDeck());
-        board = new Board();
         shuffleDeck(deckCopy);
         board.getStack().addAll(deckCopy);
+        generateDealerNameAndAvatar();
+
     }
 
+    public void generateDealerNameAndAvatar(){
+
+        List<String> avatars = new ArrayList<>(
+                Arrays.asList(
+                        "/avatars/Abraham.png", "/avatars/Apu.png",
+                        "/avatars/Homer.jpeg", "/avatars/Lisa.jpeg",
+                        "/avatars/Marge.png", "/avatars/Montgomery Burns.jpeg",
+                        "/avatars/Second number Bob.jpeg"
+                )
+        );
+        List<String> names = new ArrayList<>(
+                Arrays.asList(
+                        "Abraham Simpson","Apu","Homer Simpson",
+                        "Lisa Simpson", "Marge Simpson",
+                        "Montgomery Burns","Second number Bob"
+                )
+        );
+        int random = (int) (Math.random()*names.size());
+
+        board.setDealerName(names.get(random));
+        board.setDealerAvatar(avatars.get(random));
+    }
+
+    // привіт світ
     @Override
     public void shuffleDeck(List<Card> deck) {
+        if(board.getDealerCards().size()>0){
+            board.getDealerCards().stream().filter(el->el.getSuit().equals(board.getTrump()))
+                    .forEach(el->el.setValue(el.getValue()-13));
+            deck.addAll(board.getDealerCards());
+            getDealerCards().removeAll(getDealerCards());
+        }
+        if(board.getPlayerCards().size()>0){
+            board.getPlayerCards().stream().filter(el->el.getSuit().equals(board.getTrump()))
+                    .forEach(el->el.setValue(el.getValue()-13));
+            deck.addAll(getPlayerCards());
+            getPlayerCards().removeAll(getPlayerCards());
+        }
         Collections.shuffle(deck);
+        board.setTrump(deck.get(0).getSuit());
+        board.setTrumpCard(deck.get(0));
     }
 
     @Override
@@ -36,57 +81,111 @@ public class BoardServiceImpl implements IBoardService {
 
     @Override
     public List<Card> getPlayerCards() {
-        int playerHasCards = board.getPlayerCards().size();
-        int mustGivetoPlayer = 6 - playerHasCards;
-        if(playerHasCards < 6){
-            for (int i = 0; i <mustGivetoPlayer ; i++) {
-                Card card = board.getStack().pop();
-                board.getPlayerCards().add(card);
-            }
-        }
         return board.getPlayerCards();
     }
 
     @Override
     public List<Card> getDealerCards() {
-        int dealerHasCards = board.getDealerCards().size();
-        int mustGivetoDealer = 6 - dealerHasCards;
-        if(dealerHasCards < 6){
-            for (int i = 0; i <mustGivetoDealer ; i++) {
-                Card card = board.getStack().pop();
-                board.getDealerCards().add(card);
-            }
-        }
         return board.getDealerCards();
     }
 
     @Override
     public List<Card> getPlayerMoves() {
-        return null;
+        return board.getPlayerMoves();
     }
 
     @Override
     public List<Card> getDealerMoves() {
-        return null;
+        return board.getDealerMoves();
     }
 
     @Override
     public List<Card> getTrash() {
-        return null;
+        return board.getTrash();
     }
 
     @Override
     public String getMessage() {
-        return null;
+        return board.getMessage();
     }
 
-    @Override
+    public void firstGetTurn(){
+        Card dealercard = getDealerCards().stream().filter(el->el.getSuit().equals(getTrump()))
+                .min(Comparator.comparing(Card::getValue)).orElse(null);
+        Card playercard = getPlayerCards().stream().filter(el->el.getSuit().equals(getTrump()))
+                .min(Comparator.comparing(Card::getValue)).orElse(null);
+        if(dealercard == null && playercard == null){
+            board.setTurn(true);
+            return;
+        }
+        if(dealercard == null && playercard != null){
+            board.setTurn(true);
+            return;
+        }
+        if(dealercard != null && playercard == null){
+            board.setTurn(false);
+            return;
+        }
+        if(playercard.getValue() > dealercard.getValue()){
+            board.setTurn(false);
+            return;
+        }else{
+            board.setTurn(true);
+            return;
+        }
+    }
+
     public boolean getTurn() {
-        return false;
+        return board.isTurn();
+    }
+    void setTurn(boolean turn){
+        board.setTurn(turn);
     }
 
     @Override
     public Suit getTrump() {
-        return null;
+        return board.getTrump();
     }
+    public Card getTrumpCard() {
+        return board.getTrumpCard();
+    }
+
+    public void rechargeCards() {
+        int cards = board.getCards();
+        board = new Board();
+        if(cards==52){
+            deck.clear();
+            deck.allDeck();
+        }
+        if(cards == 36){
+            deck.clear();
+            deck.partDeck();
+        }
+
+
+        board.setCards(cards);
+        List<Card> deckCopy = new ArrayList<>();
+        deckCopy.addAll(deck.getDeck());
+        shuffleDeck(deckCopy);
+        board.getStack().addAll(deckCopy);
+
+        generateDealerNameAndAvatar();
+    }
+
+    public void setMessage(String text){
+        board.setMessage(text);
+    }
+
+    public void setCards(int cards){board.setCards(cards);}
+
+    public int getCards(){return board.getCards();}
+
+    public String getDealerName(){
+        return board.getDealerName();
+    }
+
+    public String getDealerAvatar(){
+        return board.getDealerAvatar();
+    }
+
 }

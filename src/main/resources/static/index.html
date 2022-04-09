@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Simpleton</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
-Hello dump
-<button><a href="https://github.com/bonkbanan">on desktop</a></button>
-<button><a href="/ui/board">Start game</a></button>
+<div class="board">
+    <h1 class="greeting">Welcome to Simpleton</h1>
+    <div class="buttons">
+        <button type="button" onclick="window.location.href='/ui/36'">36 Cards</button>
+        <button type="button" onclick="window.location.href='/ui/52'">52 Cards</button>
+        <button type="button" onclick="window.location.href='/ui/rules'">How to play</button>
+    </div>
+</div>
 </body>
 </html>
